@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts */
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/assets/fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@layer base {
+    html {
+      font-family: Poppins, sans-serif;
+    }
+
+    .output-group {
+        @apply w-fit flex flex-row flex-nowrap gap-x-5 my-2
+    }
+    
+    .input-group {
+        @apply flex flex-col w-[4.5rem] mx-auto md:mx-0 md:w-[7rem] flex-1 md:flex-none
+    }
+
+    .input-group > label {
+        @apply text-smokeyGrey text-sm font-bold uppercase tracking-widest
+    }
+
+    .output-section {
+        @apply text-5xl md:text-8xl font-black italic
+    }
+
+    .result-text {
+        @apply text-purple
+    }
+
+
+    input {
+        @apply border border-lightGrey rounded-[0.3rem] focus:outline-none focus:border-purple cursor-pointer
+        font-bold text-xl md:text-2xl pl-3 py-[0.3rem]
+        /* Removes the arrows on number input */
+        [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
+    }
+
+    .divider {
+        @apply bg-smokeyGrey/[0.1] w-full h-[1px] md:my-[2rem]
+    }
+
+    .error {
+        @apply text-[.5rem] mt-1 text-lightRed md:-bottom-4
+    }
+
+    .error-style > * {
+        @apply !border-lightRed
+    }
+  }

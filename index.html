@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frontend Mentor | Age calculator app</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+
+  <link rel="stylesheet" href="dist/output.css">
+
+<body>
+  <main class="h-screen flex items-center justify-center bg-lightGrey/[0.4]">
+    <div class="flex flex-col shadow-sm bg-white rounded-t-[2rem] rounded-bl-[2rem] rounded-br-[8rem] min-w-7/12 md:w-[44rem] p-[2rem] h-fit">
+      <section class="input-section">
+        <form class="flex flex-col" onsubmit="ValidateForm(event)">
+          <div class="flex flex-row flex-nowrap gap-x-6">
+            <div class="input-group">
+              <label for="day">Day</label>
+              <input type="number" id="day" name="day" min="1" placeholder="DD">
+              <span id="error-day" class="error" aria-live="polite"></span>
+            </div>
+            <div class="input-group">
+              <label for="month">Month</label>
+              <input type="number" id="month" name="month" min="1" placeholder="MM">
+              <span id="error-month" class="error" aria-live="polite"></span>
+            </div>
+            <div class="input-group">
+              <label for="year">Year</label>
+              <input type="number" id="year" name="year" min="1" placeholder="YYYY">
+              <span  id="error-year" class="error" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="flex flex-row flex-nowrap relative justify-center my-[1.5rem] md:justify-normal">
+            <div class="divider absolute md:static bottom-1/2"></div>
+            <button class="h-12 w-12 md:h-16 md:w-16 bg-purple rounded-full mr-0 md:mr-6 flex-none active:bg-offBlack">
+              <img src="./assets/images/icon-arrow.svg" alt="arrow icon" class="h-6 w-6 md:h-10 md:w-10 mx-auto">
+            </button>
+          </div>
+        </form>
+      </section>
+      <section class="output-section">
+        <div class="output-group">
+          <p id="result-year" class="result-text">--</p>
+          <p class="result-uom">years</p>
+        </div>
+        <div class="output-group">
+          <p id="result-month" class="result-text">--</p>
+          <p class="result-uom">months</p>
+        </div>
+        <div class="output-group">
+          <p id="result-day" class="result-text">--</p>
+          <p class="result-uom">days</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    
+    function ValidateForm(e){
+      e.preventDefault();
+      ResetErrorMessages();
+
+      if(ValidateFields()){
+        CalculateAge();
+      }
+    }
+
+    function ValidateFields() {
+      const now = new Date();
+      var {day, month, year} = GetDateFields();
+
+      // Empty input checks
+      if(!day.value){ setErrorMessage('day', `This field is required`); }
+      if(!month.value){ setErrorMessage('month', `This field is required`); }
+      if(!year.value){ setErrorMessage('year', `This field is required`); }
+
+      // Valid range checks
+      if(day.value   && (parseInt(day.value) > 31))                 { setErrorMessage('day', `Must be a valid day`); }
+      if(month.value && (parseInt(month.value) > 12))               { setErrorMessage('month', `Must be a valid month`); }
+      if(year.value  && (parseInt(year.value) > now.getFullYear())) { setErrorMessage('year', `Must be a valid year`); }
+
+      // Date validity check
+      if(day.value && month.value && year.value){
+        var suppliedDate = new Date(`${year.value}-${parseInt(month.value)}-${day.value}`);
+        var isValidDate = !isNaN(suppliedDate)
+        if (!isValidDate) {
+          // Reset any pre-existing messages
+
+          document.querySelector(`#error-day`).innerHTML = `Must be a valid date`;
+          // Sets error styling on all input fields
+          [...document.getElementsByClassName('input-group')].forEach(element => {
+            element.classList.add('error-style');
+          });
+        }
+      }
+
+      // Check to see if any error messages have been set in DOM, if so, return false
+      var hasError = [...document.querySelectorAll('.error')].filter(el => el.innerHTML.length > 0).length > 0 ? true : false
+      return !hasError;
+    }
+
+    function CalculateAge(){
+      var {day, month, year} = GetDateFields();
+      const now = new Date();
+      var suppliedDate = new Date(parseInt(year.value), parseInt(month.value) - 1, parseInt(day.value));
+      var delta = now - suppliedDate;
+      var age = new Date(delta);
+      document.getElementById('result-year').innerHTML = age.getFullYear() - 1970;
+      document.getElementById('result-month').innerHTML = age.getMonth();
+      document.getElementById('result-day').innerHTML = age.getDate();
+    }
+
+    function ResetErrorMessages(){
+      [...document.getElementsByClassName('error')].forEach(element => {
+        element.innerHTML = "";
+      });
+      [...document.getElementsByClassName('input-group')].forEach(element => {
+        element.classList.remove('error-style');
+      });
+    }
+
+    function GetDateFields(){
+      return {
+        day: document.getElementById('day'),
+        month: document.getElementById('month'),
+        year: document.getElementById('year')
+      }
+    }
+
+    const setErrorMessage = (id, message) => {
+      document.querySelector(`#error-${id}`).innerHTML = message;
+      document.querySelector(`#error-${id}`).parentElement.classList.add('error-style');
+      hasError = true;
+    }
+
+  </script>
+</body>
+</html>
